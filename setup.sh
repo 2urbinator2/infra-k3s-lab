@@ -12,19 +12,19 @@ get_ports() {
 }
 
 setup_cluster() {
-    ansible-playbook -i ../inventory.ini ../config/vb-k3s-setup.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
-    ansible-playbook -i ../inventory.ini ../config/cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
+    ansible-playbook -i inventory.ini config/vb-k3s-setup.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
+    ansible-playbook -i inventory.ini config/cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
 }
 
 prepare_cluster() {
     kubectl create namespace my-app
 
     kubectl create secret docker-registry ghcr-secret \
-        --docker-server=$DOCKER_SERVER \
-        --docker-username=$DOCKER_USERNAME \
-        --docker-password=$DOCKER_PASSWORD \
-        --docker-email=$DOCKER_EMAIL \
-        -n my-app
+    --docker-server=$DOCKER_SERVER \
+    --docker-username=$DOCKER_USERNAME \
+    --docker-password=$DOCKER_PASSWORD \
+    --docker-email=$DOCKER_EMAIL \
+    -n my-app
 }
 
 
@@ -41,7 +41,8 @@ case $1 in
     setup_cluster)
         setup_cluster
         ;;
-    
+    prepare_cluster)
+        prepare_cluster
         ;;
     help|-h|--help)
         help
