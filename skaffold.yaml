@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: -container
+build:
+  artifacts:
+    - image: ghcr.io/2urbinator2/backend
+      context: my-app/backend
+      docker:
+        dockerfile: Dockerfile
+    - image: ghcr.io/2urbinator2/frontend
+      context: my-app/frontend
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - config/backend-deployment.yaml
+    - config/backend-service.yaml
+    - config/frontend-deployment.yaml
+    - config/frontend-service.yaml

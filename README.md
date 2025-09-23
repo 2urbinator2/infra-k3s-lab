@@ -1,0 +1,89 @@
+# Container Deployment
+
+## Prerequisites
+- Ansible
+- VirtualBox
+- Vagrant 
+- Skafford 
+- Kubernetes CLI
+
+## VM and Kubernetes Setup 
+```bash 
+# 1. Create the infrastructure
+vagrant up
+
+# 2. Install K3s on the clusters
+./setup.sh get ports # Fill out port variables in .env
+./setup.sh setup_cluster 
+
+# (Optional:) Check on control VM if cluster is working
+vagrant ssh cluster-control
+sudo k3s kubectl get nodes -o wide # Check whether nodes are shown
+exit
+
+# (Optional:) Check if cluster management is working
+kubectl get ns # Should give you some ns
+```
+
+## Application Deployment on the Cluster
+```bash
+# 1. Prepare Cluster
+
+
+
+```
+
+
+- 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
+
+## Container -> Registry
+```bash
+# Registry Login
+docker login ghcr.io -u <github-username>
+
+# Build Images
+docker build -t frontend:1.0 .
+docker build -t backend:1.0 .
+
+# Globales Taggen der Images 
+docker tag frontend:1.0 ghcr.io/2urbinator2/frontend:1.0
+docker tag backend:1.0 ghcr.io/2urbinator2/backend:1.0 
+
+# GHCR Push
+docker push ghcr.io/2urbinator2/backend:1.0
+docker push ghcr.io/2urbinator2/frontend:1.0
+```
+
+## Registry -> Cluster 
+1. Namespace with secret
+2. apply 
+
+## Access 
+kubectl port-forward service/backend-service 5000:5000 -n my-app &
+kubectl port-forward service/frontend-service 8080:80 -n my-app &
+
+kill %1
+kill %2
+
+## Changes (manuel)
+docker build -t ghcr.io/2urbinator2/backend:1.1 ./my-app/backend
+docker build -t ghcr.io/2urbinator2/frontend:1.1 ./my-app/frontend
+
+docker push ghcr.io/2urbinator2/backend:1.1
+docker push ghcr.io/2urbinator2/frontend:1.1
+
+kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n my-app
+kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
+
+kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n my-app
+kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
+
+
+
+
+
+
+# To-do:
+- Simplifie some functions
+- add a description 
+- test everything

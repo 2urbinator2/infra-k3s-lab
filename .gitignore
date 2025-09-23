@@ -1,0 +1,5 @@
+# Ignore Vagrant files
+.vagrant/
+
+# Ignore 
+.env 
