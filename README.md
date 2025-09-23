@@ -34,8 +34,6 @@ kubectl get ns # Should give you some ns
 ```
 
 
-- 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
-
 ## Container -> Registry
 ```bash
 # Registry Login
