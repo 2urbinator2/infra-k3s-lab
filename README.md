@@ -28,17 +28,32 @@ kubectl get ns # Should give you some ns
 ## Application Deployment on the Cluster
 ```bash
 # 1. Prepare Cluster
+./setup.sh get_ports
 
+# 2. Login to Registry 
+docker login ghcr.io -u <github-username>
 
+# 3. Deploy application on cluster 
+skaffold run
 
+# Start and stop port-forwarding application
+kubectl port-forward service/backend-service 5000:5000 -n my-app &
+kubectl port-forward service/frontend-service 8080:80 -n my-app &
+
+kill %1
+kill %2
+```
+
+## Changes in the application
+```bash 
+# Every Change is immidiately live 
+skaffold dev
 ```
 
 
+hier noch prüfen
 ## Container -> Registry
 ```bash
-# Registry Login
-docker login ghcr.io -u <github-username>
-
 # Build Images
 docker build -t frontend:1.0 .
 docker build -t backend:1.0 .
@@ -56,12 +71,7 @@ docker push ghcr.io/2urbinator2/frontend:1.0
 1. Namespace with secret
 2. apply 
 
-## Access 
-kubectl port-forward service/backend-service 5000:5000 -n my-app &
-kubectl port-forward service/frontend-service 8080:80 -n my-app &
 
-kill %1
-kill %2
 
 ## Changes (manuel)
 docker build -t ghcr.io/2urbinator2/backend:1.1 ./my-app/backend
@@ -75,10 +85,6 @@ kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 
 
 kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n my-app
 kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
-
-
-
-
 
 
 # To-do:
