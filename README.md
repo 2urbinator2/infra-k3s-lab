@@ -1,4 +1,10 @@
-# Container Deployment
+# K3sVMShowcase
+
+![K3s Version](https://img.shields.io/badge/K3s-v1.30.0-blue)
+![Vagrant](https://img.shields.io/badge/Vagrant-2.4.3-lightgrey)
+![VirtualBox](https://img.shields.io/badge/VirtualBox-7.0-blue)
+![Microservices](https://img.shields.io/badge/Microservices-2-orange)
+
 
 ## Prerequisites
 - Ansible
