@@ -4,12 +4,12 @@ Vagrant.configure("2") do |config|
 
   nat_exists = `VBoxManage list natnetworks`.include?("NatNetwork")
 
+  # Püfen, ob enp0s10 überhaupt benötigt wird
   if !nat_exists
     system("VBoxManage natnetwork add --netname NatNetwork --network 10.0.3.0/24 --dhcp on")
     system("VBoxManage natnetwork start --netname NatNetwork")
   end
 
-  # Create VMs
   vms = [
   { name: "cluster-control", memory: 2048, cpus: 1 },
   { name: "cluster-worker", memory: 1024, cpus: 1 }
@@ -42,20 +42,20 @@ Vagrant.configure("2") do |config|
 
   # Install K3s on the VMs using Ansible
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "config/vb-k3s-setup.yml"
+    ansible.playbook = "config/k3s-setup.yml"
     ansible.inventory_path = "inventory.ini"
     ansible.extra_vars = {
       ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
     }
   end
 
-  # Central Cluster Management using Ansible
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "config/cluster-management.yml"
-    ansible.inventory_path = "inventory.ini"
-    ansible.extra_vars = {
-      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
-    }
-  end
+  # # Central Cluster Management using Ansible
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "config/cluster-management.yml"
+  #   ansible.inventory_path = "inventory.ini"
+  #   ansible.extra_vars = {
+  #     ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+  #   }
+  # end
 
 end

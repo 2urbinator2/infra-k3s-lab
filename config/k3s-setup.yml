@@ -8,11 +8,11 @@
         state: present
         update_cache: yes
 
-    - name: Finde internal IP von NIC2 (enp0s9)
+    - name: Find internal IP of NIC2
       command: ip -4 addr show dev enp0s9
       register: nic2_out
 
-    - name: Setze internal_ip Fact
+    - name: Set internal_ip fact
       set_fact:
         internal_ip: "{{ (nic2_out.stdout | regex_search('inet ([0-9\\.]+)', '\\1')) | first }}"
 

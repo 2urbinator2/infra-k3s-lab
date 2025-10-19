@@ -1,4 +1,4 @@
-# K3sVMShowcase
+# K3sVMShowcase MT
 
 ![K3s Version](https://img.shields.io/badge/K3s-v1.30.0-blue)
 ![Vagrant](https://img.shields.io/badge/Vagrant-2.4.3-lightgrey)
@@ -7,13 +7,20 @@
 
 
 ## Prerequisites
-- Ansible
-- VirtualBox
-- Vagrant 
+- **Infrastructure:** VirtualBox, Vagrant
+- **Configuration Management:** Ansible 
+
+
+
+- , 
 - Skafford 
 - Kubernetes CLI
 
-## VM and Kubernetes Setup 
+
+
+ip addr show enp0s9
+
+## Create Infrastructure and Deploy K3s
 ```bash 
 # 1. Create the infrastructure
 vagrant up
@@ -49,6 +56,8 @@ kubectl port-forward service/frontend-service 8080:80 -n my-app &
 kill %1
 kill %2
 ```
+
+
 
 ## Changes in the application
 ```bash 
@@ -97,3 +106,12 @@ kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 
 - Simplifie some functions
 - add a description 
 - test everything
+
+
+
+### Create VMs with Vagrantfile
+- Two virtual machines are created using Ubuntu 24.04 (control-1 and worker-1)
+- Connects the VM’s to the VirtualBox NAT network named NatNetwork
+- Each VM also gets a Host-Only network for direct communication with the host.
+
+### Deploy K3s with Ansible 
