@@ -39,23 +39,5 @@ Vagrant.configure("2") do |config|
 
   sudo dhclient enp0s9
   SHELL
-
-  # Install K3s on the VMs using Ansible
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "config/k3s-setup.yml"
-    ansible.inventory_path = "inventory.ini"
-    ansible.extra_vars = {
-      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
-    }
-  end
-
-  # # Central Cluster Management using Ansible
-  # config.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = "config/cluster-management.yml"
-  #   ansible.inventory_path = "inventory.ini"
-  #   ansible.extra_vars = {
-  #     ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
-  #   }
-  # end
-
+  
 end

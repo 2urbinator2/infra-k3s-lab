@@ -8,22 +8,22 @@
 
 ## Prerequisites
 - **Infrastructure:** VirtualBox, Vagrant
-- **Configuration Management:** Ansible 
+- **Configuration, Automation, Orchestration:** Ansible, Kubernetes CLI, Skafford 
+
+## Getting Started
+1. Create infrastructure: `vagrant up`
+2. Deploy K3s and setup cluster management: `./scripts/setup-cluster.sh`
 
 
 
-- , 
-- Skafford 
-- Kubernetes CLI
 
 
 
-ip addr show enp0s9
 
-## Create Infrastructure and Deploy K3s
+
 ```bash 
 # 1. Create the infrastructure
-vagrant up
+
 
 # 2. Install K3s on the clusters
 ./setup.sh get ports # Fill out port variables in .env
@@ -108,10 +108,24 @@ kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 
 - test everything
 
 
-
-### Create VMs with Vagrantfile
+## Project Summary
+### 1. Create VMs with Vagrantfile
 - Two virtual machines are created using Ubuntu 24.04 (control-1 and worker-1)
 - Connects the VM’s to the VirtualBox NAT network named NatNetwork
 - Each VM also gets a Host-Only network for direct communication with the host.
+```bash
+vagrant status
+vagrant destroy
+vagrant ssh <vm_name>
+```
 
-### Deploy K3s with Ansible 
+### 2. Deploy K3s with Ansible and Set Kubernetes CLI
+- Central script to discover ports, deploy K3s, and set up central cluster management: `scripts/setup-cluster.sh`
+- The port number for the inventory file is written directly into the `.env` via a script: `scripts-ports.sh`
+- Directly via the Vagrant file, K3s is deployed on the 2 VMs: `config/k3s-setup.yml`
+- Configuration files are applied via the Kubernetes CLI and set as the current cluster: `config/cluster-management.yml`
+```bash
+ls ~/.kube
+
+```
+

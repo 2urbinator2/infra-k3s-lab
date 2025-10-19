@@ -1,5 +1,5 @@
 - name: Prüfe ob K3s auf den Control-Instanzen vorhanden ist
-  hosts: "*-control"
+  hosts: "cluster-control-1"
   become: yes
   tasks:
     - name: Erstelle lokales Verzeichnis falls nicht vorhanden

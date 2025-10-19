@@ -17,7 +17,7 @@
         internal_ip: "{{ (nic2_out.stdout | regex_search('inet ([0-9\\.]+)', '\\1')) | first }}"
 
 - name: Install k3s on control planes
-  hosts: "*-control"
+  hosts: "cluster-control-1"
   become: yes
   tasks:
     - name: Install k3s on control plane
@@ -31,7 +31,7 @@
       changed_when: false
   
 - name: Install k3s auf Worker
-  hosts: "*-worker"
+  hosts: "cluster-worker-1"
   become: yes
   vars:
     k3s_port: 6443
