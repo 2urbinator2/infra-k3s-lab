@@ -2,9 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: my-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -15,8 +14,6 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ghcr.io/2urbinator2/backend:1.0
+        image: localhost:5001/backend:latest
         ports:
         - containerPort: 5000
-      imagePullSecrets:
-      - name: ghcr-secret

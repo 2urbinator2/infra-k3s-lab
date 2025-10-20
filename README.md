@@ -16,84 +16,19 @@
       1. `cd my-app/frontend` with `docker build -t frontend:latest .` 
       2. `cd ../backend` with `docker build -t backend:latest .`
       3. `cd ../..`
-   2. Tag Images: `docker tag frontend:latest localhost:5001/frontend:latest` and `docker tag backend:latest localhost:5001/backend:latest`
-   3. Push Images: `docker push localhost:5001/frontend:latest` and `docker push localhost:5001/backend:latest`
-      1. Check Registry with: `curl http://localhost:5001/v2/_catalog`
+   2. Tag Images: `docker tag frontend:latest 192.168.56.3:5001/frontend:latest` and `docker tag backend:latest 192.168.56.3:5001/backend:latest`
+   3. Push Images: `docker push 192.168.56.3:5001/frontend:latest` and `docker push 192.168.56.3:5001/backend:latest`
+      1. Check Registry with: `curl http://192.168.56.3:5001/v2/_catalog`
+   4. Deploy Application on the Cluster: 
 
+
+kubectl apply -f config/frontend-deployment.yaml
+kubectl apply -f config/backend-deployment.yaml
 
 localhost
 
 ## Destroy Everything
 - Execute: `./scripts/destroy.sh`
-
-
-
-
-
-
-```bash
-# 1. Prepare Cluster
-./setup.sh get_ports
-
-# 2. Login to Registry 
-docker login ghcr.io -u <github-username>
-
-# 3. Deploy application on cluster 
-skaffold run
-
-# Start and stop port-forwarding application
-kubectl port-forward service/backend-service 5000:5000 -n my-app &
-kubectl port-forward service/frontend-service 8080:80 -n my-app &
-
-kill %1
-kill %2
-```
-
-
-
-## Changes in the application
-```bash 
-# Every Change is immidiately live 
-skaffold dev
-```
-
-
-hier noch prüfen
-## Container -> Registry
-```bash
-# Build Images
-docker build -t frontend:1.0 .
-docker build -t backend:1.0 .
-
-# Globales Taggen der Images 
-docker tag frontend:1.0 ghcr.io/2urbinator2/frontend:1.0
-docker tag backend:1.0 ghcr.io/2urbinator2/backend:1.0 
-
-# GHCR Push
-docker push ghcr.io/2urbinator2/backend:1.0
-docker push ghcr.io/2urbinator2/frontend:1.0
-```
-
-## Registry -> Cluster 
-1. Namespace with secret
-2. apply 
-
-
-
-## Changes (manuel)
-docker build -t ghcr.io/2urbinator2/backend:1.1 ./my-app/backend
-docker build -t ghcr.io/2urbinator2/frontend:1.1 ./my-app/frontend
-
-docker push ghcr.io/2urbinator2/backend:1.1
-docker push ghcr.io/2urbinator2/frontend:1.1
-
-kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n my-app
-kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
-
-kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n my-app
-kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
-
-
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile
@@ -119,7 +54,11 @@ kubectl config use-context my-cluster
 kubectl config get-contexts
 ```
 
-### 3. Create Registry in Docker and Deploy 
+### 3. Create Registry in Docker
+- A Docker registry is created in `/scripts/setup-cluster.sh`
+- All cluster nodes are registered with `register-registry.sh`
+
+### 4. Deploy Application on the Cluster
 - The application's **frontend** is built with **HTML**, and the **backend** is written in **Python**.
 - The two services of the application are located under `my-app`
 - A registry is created in Docker: `scripts/setup-cluster.sh`
@@ -127,6 +66,5 @@ kubectl config get-contexts
 docker ps 
 docker images
 curl http://localhost:5001/v2/_catalog # Could also be tested from the VMs 
+ifconfig bridge100 | grep "inet " | awk '{print $2}'
 ```
-
-

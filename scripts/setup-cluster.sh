@@ -26,3 +26,6 @@ echo "Setting up local Docker registry on host machine..."
 docker run -d -p 5001:5000 --name registry \
   -v $(pwd)/registry-data:/var/lib/registry \
   registry:2
+
+echo "Registering local Docker registry on all cluster nodes..."
+./scripts/register-registry.sh
