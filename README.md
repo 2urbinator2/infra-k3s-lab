@@ -23,10 +23,6 @@
    4. Deploy Application on the Cluster: 
 
 
-kubectl apply -f config/frontend-deployment.yaml
-kubectl apply -f config/backend-deployment.yaml
-
-localhost
 
 ## Destroy Everything
 - Execute: `./scripts/destroy.sh`
