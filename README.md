@@ -6,6 +6,7 @@
 ![Microservices](https://img.shields.io/badge/Microservices-2-orange)
 
 ## Prerequisites
+- **Host:** MacOS (Not tested on other OSs)
 - **Infrastructure:** VirtualBox, Vagrant, Docker
 - **Configuration, Automation, Orchestration:** Ansible, Kubernetes CLI, Skaffold 
 

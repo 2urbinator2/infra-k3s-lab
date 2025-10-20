@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ENV_FILE="$(dirname "$0")/../.env"
+
 # This script creates VMs, sets up the K3s cluster, configures cluster management and creates a local Docker registry
 echo "Bringing up Vagrant VMs..."
 vagrant up
