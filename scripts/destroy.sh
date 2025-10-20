@@ -12,4 +12,7 @@ docker rmi registry:2
 echo "Removing .env file."
 rm .env
 
+echo "Removing registry data directory."
+rm -rf registry-data
+
 echo "Cleanup completed."

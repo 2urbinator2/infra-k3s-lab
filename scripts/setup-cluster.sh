@@ -8,8 +8,11 @@ echo "Connect to Vagrant VMs to initialize SSH connections..."
 vagrant ssh cluster-control -c "exit"
 vagrant ssh cluster-worker -c "exit"
 
+# Create .env file if it doesn't exist
+touch .env
+
 echo "Getting host ports for Vagrant VMs and writing to .env file..."
-./scripts/get-ports.sh
+./get-ports.sh
 
 mkdir -p ~/.kube/cs-cluster
 
