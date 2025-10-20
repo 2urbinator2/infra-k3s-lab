@@ -1,16 +1,28 @@
 #!/bin/bash
 
-echo "Getting host ports for Vagrant VMs and writing to .env file..."
+# This script creates VMs, sets up the K3s cluster, configures cluster management and creates a local Docker registry
+echo "Bringing up Vagrant VMs..."
+vagrant up
 
+echo "Connect to Vagrant VMs to initialize SSH connections..."
+vagrant ssh cluster-control -c "exit"
+vagrant ssh cluster-worker -c "exit"
+
+echo "Getting host ports for Vagrant VMs and writing to .env file..."
 ./scripts/get-ports.sh
 
-echo "Setting up K3s cluster with Ansible..."
+mkdir -p ~/.kube/cs-cluster
 
-ansible-playbook -i inventory.ini config/k3s-setup.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
+echo "Setting up K3s cluster with Ansible..."
+ansible-playbook -i inventory.yaml config/k3s-setup.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
 
 echo "Configuring cluster management with Ansible..."
+ansible-playbook -i inventory.yaml config/cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
 
-ansible-playbook -i inventory.ini cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
+echo 'export KUBECONFIG=~/.kube/cs-cluster' >> ~/.bashrc
+source ~/.bashrc
 
-
-
+echo "Setting up local Docker registry on host machine..."
+docker run -d -p 5001:5000 --name registry \
+  -v $(pwd)/registry-data:/var/lib/registry \
+  registry:2

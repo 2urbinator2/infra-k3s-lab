@@ -4,7 +4,6 @@ Vagrant.configure("2") do |config|
 
   nat_exists = `VBoxManage list natnetworks`.include?("NatNetwork")
 
-  # Püfen, ob enp0s10 überhaupt benötigt wird
   if !nat_exists
     system("VBoxManage natnetwork add --netname NatNetwork --network 10.0.3.0/24 --dhcp on")
     system("VBoxManage natnetwork start --netname NatNetwork")

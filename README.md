@@ -5,40 +5,32 @@
 ![VirtualBox](https://img.shields.io/badge/VirtualBox-7.0-blue)
 ![Microservices](https://img.shields.io/badge/Microservices-2-orange)
 
-
 ## Prerequisites
-- **Infrastructure:** VirtualBox, Vagrant
-- **Configuration, Automation, Orchestration:** Ansible, Kubernetes CLI, Skafford 
+- **Infrastructure:** VirtualBox, Vagrant, Docker
+- **Configuration, Automation, Orchestration:** Ansible, Kubernetes CLI, Skaffold 
 
-## Getting Started
-1. Create infrastructure: `vagrant up`
-2. Deploy K3s and setup cluster management: `./scripts/setup-cluster.sh`
-
-
-
-
-
-
-
-
-```bash 
-# 1. Create the infrastructure
+## Get Started
+1. Creation of the infrastructure and cluster setup: `./scripts/setup-cluster.sh`
+2. Deploy Application on the Cluster:
+   1. Build Images: 
+      1. `cd my-app/frontend` with `docker build -t frontend:latest .` 
+      2. `cd ../backend` with `docker build -t backend:latest .`
+      3. `cd ../..`
+   2. Tag Images: `docker tag frontend:latest localhost:5001/frontend:latest` and `docker tag backend:latest localhost:5001/backend:latest`
+   3. Push Images: `docker push localhost:5001/frontend:latest` and `docker push localhost:5001/backend:latest`
+      1. Check Registry with: `curl http://localhost:5001/v2/_catalog`
 
 
-# 2. Install K3s on the clusters
-./setup.sh get ports # Fill out port variables in .env
-./setup.sh setup_cluster 
+localhost
 
-# (Optional:) Check on control VM if cluster is working
-vagrant ssh cluster-control
-sudo k3s kubectl get nodes -o wide # Check whether nodes are shown
-exit
+## Destroy Everything
+- Execute: `./scripts/destroy.sh`
 
-# (Optional:) Check if cluster management is working
-kubectl get ns # Should give you some ns
-```
 
-## Application Deployment on the Cluster
+
+
+
+
 ```bash
 # 1. Prepare Cluster
 ./setup.sh get_ports
@@ -102,11 +94,6 @@ kubectl set image deployment/backend backend=ghcr.io/2urbinator2/backend:1.1 -n 
 kubectl set image deployment/frontend frontend=ghcr.io/2urbinator2/frontend:1.1 -n my-app
 
 
-# To-do:
-- Simplifie some functions
-- add a description 
-- test everything
-
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile
@@ -125,7 +112,21 @@ vagrant ssh <vm_name>
 - Directly via the Vagrant file, K3s is deployed on the 2 VMs: `config/k3s-setup.yml`
 - Configuration files are applied via the Kubernetes CLI and set as the current cluster: `config/cluster-management.yml`
 ```bash
-ls ~/.kube
-
+ls ~/.kube/cs-cluster
+nano ~/.kube/cs-cluster/my-cluster.yml
+rm -rf ~/.kube/cs-cluster
+kubectl config use-context my-cluster
+kubectl config get-contexts
 ```
+
+### 3. Create Registry in Docker and Deploy 
+- The application's **frontend** is built with **HTML**, and the **backend** is written in **Python**.
+- The two services of the application are located under `my-app`
+- A registry is created in Docker: `scripts/setup-cluster.sh`
+```bash
+docker ps 
+docker images
+curl http://localhost:5001/v2/_catalog # Could also be tested from the VMs 
+```
+
 
