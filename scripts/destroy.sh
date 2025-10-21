@@ -15,4 +15,7 @@ rm .env
 echo "Removing registry data directory."
 rm -rf registry-data
 
+echo "Delete Kubeconfig for the cluster." 
+rm -rf ~/.kube/cs-cluster
+
 echo "Cleanup completed."

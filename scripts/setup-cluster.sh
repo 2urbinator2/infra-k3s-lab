@@ -1,8 +1,7 @@
 #!/bin/bash
 
-ENV_FILE="$(dirname "$0")/../.env"
-
 # This script creates VMs, sets up the K3s cluster, configures cluster management and creates a local Docker registry
+
 echo "Bringing up Vagrant VMs..."
 vagrant up
 
@@ -10,11 +9,11 @@ echo "Connect to Vagrant VMs to initialize SSH connections..."
 vagrant ssh cluster-control -c "exit"
 vagrant ssh cluster-worker -c "exit"
 
-# Create .env file if it doesn't exist
+echo "Creating .env file if it does not exist..."
 touch .env
 
 echo "Getting host ports for Vagrant VMs and writing to .env file..."
-./get-ports.sh
+./scripts/get-ports.sh
 
 mkdir -p ~/.kube/cs-cluster
 
