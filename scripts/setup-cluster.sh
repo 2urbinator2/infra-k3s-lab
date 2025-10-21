@@ -15,6 +15,7 @@ touch .env
 echo "Getting host ports for Vagrant VMs and writing to .env file..."
 ./scripts/get-ports.sh
 
+echo "Creating a folder for Kubeconfig..."
 mkdir -p ~/.kube/cs-cluster
 
 echo "Setting up K3s cluster with Ansible..."
@@ -26,10 +27,5 @@ ansible-playbook -i inventory.yaml config/cluster-management.yml --ssh-extra-arg
 echo 'export KUBECONFIG=~/.kube/cs-cluster' >> ~/.bashrc
 source ~/.bashrc
 
-echo "Setting up local Docker registry on host machine..."
-docker run -d -p 5001:5000 --name registry \
-  -v $(pwd)/registry-data:/var/lib/registry \
-  registry:2
-
 echo "Registering local Docker registry on all cluster nodes..."
-./scripts/register-registry.sh
+./scripts/setup-registry.sh

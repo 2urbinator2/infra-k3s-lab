@@ -2,15 +2,24 @@
 
 # This script automates the deployment of the application on the K3s cluster
 
-echo "Setting up local Docker registry on host machine..."
+set -e
+
+# echo "Deploying applications to K3s cluster..."
+
+# set -o allexport
+# source .env
+# set +o allexport
+
+# echo "Building Docker images for frontend and backend..."
+# docker build -t frontend:latest ./my-app/frontend
+# docker build -t backend:latest ./my-app/backend
+
+# echo "Tagging Docker images for local registry..."
+# docker tag frontend:latest $HOST_IP:5001/frontend:latest
+# docker tag backend:latest $HOST_IP:5001/backend:latest
+
+# echo "Pushing Docker images to local registry..."
+# docker push $HOST_IP:5001/frontend:latest
+# docker push $HOST_IP:5001/backend:latest
 
 
-
-# 1. Build Images: 
-#       1. `cd my-app/frontend` with `docker build -t frontend:latest .` 
-#       2. `cd ../backend` with `docker build -t backend:latest .`
-#       3. `cd ../..`
-#    2. Tag Images: `docker tag frontend:latest 192.168.56.3:5001/frontend:latest` and `docker tag backend:latest 192.168.56.3:5001/backend:latest`
-#    3. Push Images: `docker push 192.168.56.3:5001/frontend:latest` and `docker push 192.168.56.3:5001/backend:latest`
-#       1. Check Registry with: `curl http://192.168.56.3:5001/v2/_catalog`
-#    4. Deploy Application on the Cluster: 

@@ -55,3 +55,4 @@ docker images
 curl http://localhost:5001/v2/_catalog # Could also be tested from the VMs 
 ifconfig bridge100 | grep "inet " | awk '{print $2}'
 ```
+- Problem with https: Add 

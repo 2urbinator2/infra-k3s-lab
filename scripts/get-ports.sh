@@ -2,15 +2,15 @@
 
 ENV_FILE="./.env"
 
-# Extract VM names
+echo "Extracting Vagrant VM port mappings..."
 control_vm=$(vagrant status | awk 'NR>2 && $1 ~ /^cluster-control/ {print $1}')
 worker_vm=$(vagrant status | awk 'NR>2 && $1 ~ /^cluster-worker/ {print $1}')
 
-# Extract host ports
+echo "Control VM: $control_vm"
 control_port=$(vagrant port "$control_vm" 2>/dev/null | grep '=>' | awk '{gsub(/\(|\)/,"",$4); print $4}')
 worker_port=$(vagrant port "$worker_vm" 2>/dev/null | grep '=>' | awk '{gsub(/\(|\)/,"",$4); print $4}')
 
-# Write to .env file (macOS compatible)
+echo "Control Port: $control_port"
 grep -q '^CONTROL_PORT=' "$ENV_FILE" && \
     sed -i '' "s/^CONTROL_PORT=.*/CONTROL_PORT=$control_port/" "$ENV_FILE" || \
     echo "CONTROL_PORT=$control_port" >> "$ENV_FILE"
