@@ -20,6 +20,11 @@ Vagrant.configure("2") do |config|
 
       vm.vm.network "private_network", type: "dhcp", adapter: 3
 
+      if cfg[:name] == "cluster-control"
+        vm.vm.network "forwarded_port", guest: 30080, host: 30080 
+        vm.vm.network "forwarded_port", guest: 31000, host: 31000  
+      end
+
       vm.vm.provider "virtualbox" do |vb|
         vb.name = cfg[:name]
         vb.memory = cfg[:memory]
@@ -38,5 +43,5 @@ Vagrant.configure("2") do |config|
 
   sudo dhclient enp0s9
   SHELL
-  
+
 end

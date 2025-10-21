@@ -5,10 +5,9 @@
 set -e
 
 # echo "Deploying applications to K3s cluster..."
-
-# set -o allexport
-# source .env
-# set +o allexport
+set -o allexport
+source .env
+set +o allexport
 
 # echo "Building Docker images for frontend and backend..."
 # docker build -t frontend:latest ./my-app/frontend
@@ -22,4 +21,18 @@ set -e
 # docker push $HOST_IP:5001/frontend:latest
 # docker push $HOST_IP:5001/backend:latest
 
+# echo "Generating Kubernetes deployment configurations..."
+# sed "s|IMAGE_PLACEHOLDER|$HOST_IP:5001/backend:latest|" ./config/backend-deployment.yaml.template > ./config/backend-deployment.yaml
+# sed "s|IMAGE_PLACEHOLDER|$HOST_IP:5001/frontend:latest|" ./config/frontend-deployment.yaml.template > ./config/frontend-deployment.yaml
 
+# echo "Applying Kubernetes deployment configurations..."
+# kubectl apply -f ./config/frontend-deployment.yaml
+# kubectl apply -f ./config/backend-deployment.yaml
+
+# echo "Applying Kubernetes service configurations..."
+# kubectl apply -f config/backend-service.yaml
+# kubectl apply -f config/frontend-service.yaml
+
+echo "Opening application in web browser..."
+open "http://$HOST_IP:30080"
+open "http://$HOST_IP:31000"
