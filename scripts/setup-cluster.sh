@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script creates VMs, sets up the K3s cluster, configures cluster management and creates a local Docker registry
+# This script creates VMs, sets up the K3s cluster and configures cluster management
 
 echo "Bringing up Vagrant VMs..."
 vagrant up
@@ -24,8 +24,5 @@ ansible-playbook -i inventory.yaml config/k3s-setup.yml --ssh-extra-args="-o Str
 echo "Configuring cluster management with Ansible..."
 ansible-playbook -i inventory.yaml config/cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"
 
-echo 'export KUBECONFIG=~/.kube/cs-cluster' >> ~/.bashrc
+echo 'export KUBECONFIG=~/.kube/cs-cluster/my-cluster.yml' >> ~/.bashrc
 source ~/.bashrc
-
-echo "Registering local Docker registry on all cluster nodes..."
-./scripts/setup-registry.sh
