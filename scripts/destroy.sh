@@ -37,8 +37,8 @@ delete_all() {
     docker rmi $HOST_IP:5001/backend:latest
 
     echo "Removing generated Kubernetes deployment configurations..."
-    rm /config/backend-deployment.yaml.template
-    rm /config/frontend-deployment.yaml.template
+    rm ./config/backend-deployment.yaml
+    rm ./config/frontend-deployment.yaml
 
     echo "Cleanup completed."
   

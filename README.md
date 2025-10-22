@@ -1,28 +1,38 @@
-# K3sVMShowcase MT
+# K3sVMShowcase MT - Berlin Travel Guide
 
-![K3s Version](https://img.shields.io/badge/K3s-v1.30.0-blue)
-![Vagrant](https://img.shields.io/badge/Vagrant-2.4.3-lightgrey)
-![VirtualBox](https://img.shields.io/badge/VirtualBox-7.0-blue)
-![Microservices](https://img.shields.io/badge/Microservices-2-orange)
+![Experimental Setup](https://img.shields.io/badge/Experimental-Setup-1563FF?style=flat)
+![K3s Cluster](https://img.shields.io/badge/K3s-Cluster-4BC51D?logo=kubernetes&logoColor=white)
+![Vagrant Setup](https://img.shields.io/badge/Vagrant-Automation-1563FF?logo=vagrant&logoColor=white)
+![VirtualBox VMs](https://img.shields.io/badge/VirtualBox-2%20VMs-183A61?logo=virtualbox&logoColor=white)
+![Microservices](https://img.shields.io/badge/Microservices-2-orange?logo=containers&logoColor=white)
+
+This project deploys a simple Berlin Travel Guide consisting of two microservices: the frontend, which displays a random Berlin attraction, and the backend, which provides the attractions through an API. It runs on a lightweight K3s cluster distributed across two VirtualBox VMs, automatically set up using Vagrant. The goal is to achieve a fully automated deployment, allowing the application to run smoothly with minimal manual configuration.
 
 ## Prerequisites
-- **Host:** MacOS (Not tested on other OSs)
+- **Host:** MacOS
 - **Infrastructure:** VirtualBox, Vagrant, Docker
 - **Configuration, Automation, Orchestration:** Ansible, Kubernetes CLI
 
 ## Get Started
-1. Set-up infrastructure and deploy application: `./scripts/setup-cluster.sh` and then `./scripts/deploy-app.sh`
-    - VM-commands: `vagrant ssh cluster-control`
-    - K3s-commands: `kubectl get ns/po/svc`, `kubectl config use-context my-cluster`, `kubectl config get-contexts`
-    - Docker-commands: `docker ps`, `docker images`
-2. Open Application in web-browser: 
+1. Create and setup infrastructure: `./scripts/setup-cluster.sh` 
+2. Set-up registry: `./scripts/setup-registry.sh`
+3. Deploy application on the cluster: `./scripts/deploy.sh initial`
+   - Information about the application: `cd/applications/berlin-travel-guide`
+
+
+
+
     - Open in Browser: `open "http://localhost:30080"` and `open "http://localhost:31000/quote" `
     - Stop in Browser: 
+
+
+and then `./scripts/deploy-app.sh`
+
 
 ## Further Settings
 3. Deploy changes to the cluster: `./scripts/deploy-changes.sh`
 4. Stop and restart (VMs in VBox and Docker): `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
-5. Destroy infrastructure and deployments: `./scripts/destroy.sh`
+5. Destroy infrastructure and deployments: `./scripts/destroy.sh all`
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile

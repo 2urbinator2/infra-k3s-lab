@@ -12,15 +12,15 @@
       try {
         const res = await fetch("http://localhost:5003/quote");
         const data = await res.json();
-        document.getElementById("quote").innerHTML = 'I would recommend visiting <span style="color:red;">' + data.quote + '</span> first.';
+        document.getElementById("quote").innerHTML = 'I would recommend visiting <span style="color:red;">'+data.quote+'</span> first.';
       } catch (err) {
         document.getElementById("quote").innerText = "Error loading the quote";
         console.error(err);
       }
     }
-
     loadQuote();
   </script>
+
 </body>
 </html>
 

@@ -7,7 +7,8 @@ control_vm=$(vagrant status | awk 'NR>2 && $1 ~ /^cluster-control/ {print $1}')
 worker_vm=$(vagrant status | awk 'NR>2 && $1 ~ /^cluster-worker/ {print $1}')
 
 echo "Control VM: $control_vm"
-control_port=$(vagrant port "$control_vm" 2>/dev/null | grep '=>' | awk '{gsub(/\(|\)/,"",$4); print $4}')
+# control_port=$(vagrant port "$control_vm" 2>/dev/null | grep '=>' | awk '{gsub(/\(|\)/,"",$4); print $4}')
+control_port=$(vagrant port "$control_vm" 2>/dev/null | grep '(guest)' | head -n 1 | awk '{print $4}' | tr -d '\r\n')
 worker_port=$(vagrant port "$worker_vm" 2>/dev/null | grep '=>' | awk '{gsub(/\(|\)/,"",$4); print $4}')
 
 echo "Control Port: $control_port"
