@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Quote App</title>
+  <title>Berlin Guide</title>
 </head>
 <body>
-  <h1>Wixxer</h1>
+  <h1>Berlin Sightseeing Guide</h1>
   <div id="quote"></div>
 
   <script>
     async function loadQuote() {
-      const res = await fetch("http://localhost:5000/quote");
+      const res = await fetch("http://backend-service:5000/quote");
       const data = await res.json();
       document.getElementById("quote").innerText = data.quote;
     }

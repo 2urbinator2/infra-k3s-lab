@@ -5,10 +5,16 @@ import random
 app = Flask(__name__)
 
 quotes = [
-    "Kubernetes rocks!",
-    "Container all the things!",
-    "Keep calm and kubectl apply -f",
-    "Pods > VMs"
+    "Brandenburg Gate", 
+    "Berlin Wall Memorial", 
+    "Reichstag Building", 
+    "Museum Island", 
+    "Alexanderplatz", 
+    "Checkpoint Charlie", 
+    "Berlin Cathedral", 
+    "East Side Gallery", 
+    "Potsdamer Platz", 
+    "Charlottenburg Palace",
 ]
 
 @app.route("/quote")

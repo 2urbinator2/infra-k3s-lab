@@ -15,8 +15,14 @@
     - VM-commands: `vagrant ssh cluster-control`
     - K3s-commands: `kubectl get ns/po/svc`, `kubectl config use-context my-cluster`, `kubectl config get-contexts`
     - Docker-commands: `docker ps`, `docker images`
-2. Stop and restart (VMs in VBox and Docker): `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
-3. Destroy infrastructure and deployments: `./scripts/destroy.sh`
+2. Open Application in web-browser: 
+    - Open in Browser: `open "http://localhost:30080"` and `open "http://localhost:31000/quote" `
+    - Stop in Browser: 
+
+## Further Settings
+3. Deploy changes to the cluster: `./scripts/deploy-changes.sh`
+4. Stop and restart (VMs in VBox and Docker): `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
+5. Destroy infrastructure and deployments: `./scripts/destroy.sh`
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile

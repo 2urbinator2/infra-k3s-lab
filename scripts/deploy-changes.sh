@@ -4,27 +4,33 @@
 
 set -e
 
-# Load environment variables
 set -o allexport
 source ./.env
 set +o allexport
 
 echo "Deploying changes."
 
-# 1. Build images
-docker build -t $HOST_IP:5001/frontend:latest ./frontend
-docker build -t $HOST_IP:5001/backend:latest ./backend
+echo "Generating unique tag for this deployment..."
+TAG=$(date +%s)
 
-# 2. Push zur Registry
+echo "Building Docker images for frontend and backend..."
+docker build -t $HOST_IP:5001/frontend:$TAG ./my-app/frontend
+docker build -t $HOST_IP:5001/backend:$TAG ./my-app/backend
+
+echo "Pushing Docker images to local registry..."
 docker push $HOST_IP:5001/frontend:latest
 docker push $HOST_IP:5001/backend:latest
 
-# 3. Deployments aktualisieren
-kubectl set image deployment/frontend frontend=$HOST_IP:5001/frontend:latest
-kubectl set image deployment/backend backend=$HOST_IP:5001/backend:latest
+echo "Updating Kubernetes deployments with new images..."
+kubectl set image deployment/frontend frontend=$HOST_IP:5001/frontend:$TAG --record
+kubectl set image deployment/backend backend=$HOST_IP:5001/backend:$TAG --record
 
-# 4. Check rollout
-kubectl rollout status deployment/frontend
-kubectl rollout status deployment/backend
+echo "Waiting for deployments to roll out..."
+kubectl rollout restart deployment/frontend
+kubectl rollout restart deployment/backend
+
+kubectl rollout status deployment/frontend --timeout=30s || echo "Frontend Rollout hängt – Logs prüfen"
+kubectl rollout status deployment/backend --timeout=30s || echo "Backend Rollout hängt – Logs prüfen"
+
 
 echo "Successfully deployed!"

@@ -4,9 +4,6 @@
 # Ignore 
 .env 
 
-# Ingnore
-to-do.md
-
 # Ignore registry data
 registry-data
 
