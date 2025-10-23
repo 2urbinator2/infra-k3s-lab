@@ -21,9 +21,9 @@ This project deploys a simple Berlin Travel Guide consisting of two microservice
  
 ## Further Settings
 1. Deploy changes: `./scripts/destroy.sh app` and `./scripts/deploy.sh initial`
-1. Stop and restart (VMs in VBox and Docker): `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
-2. Destroy infrastructure and deployments: `./scripts/destroy.sh all`
-3. Further information about the application in `applications/berlin-travel-guide`
+2. Stop and restart: `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
+3. Destroy infrastructure and deployments: `./scripts/destroy.sh all`
+4. Further information about the application in `applications/berlin-travel-guide`
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile
