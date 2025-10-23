@@ -9,6 +9,7 @@ This is a simple travel guide that gives the user a random suggestion of which B
 Open two Terminals:
 1. `cd backend` and `python3 app.py`
 2. `cd frontend`and `python3 -m http.server 8000`
+  - Change for local: `"http://localhost:5003/quote"`
 Open Tabs in your Browser:
 1: `http://localhost:5003/quote` --> You should see a simple quote
 2: `http://localhost:8000/index.html`--> You should see a header with a quote from the backend

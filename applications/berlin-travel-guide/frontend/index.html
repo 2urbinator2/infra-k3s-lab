@@ -10,7 +10,7 @@
   <script>
     async function loadQuote() {
       try {
-        const res = await fetch("http://localhost:5003/quote");
+        const res = await fetch("http://localhost:31000/quote");
         const data = await res.json();
         document.getElementById("quote").innerHTML = 'I would recommend visiting <span style="color:red;">'+data.quote+'</span> first.';
       } catch (err) {

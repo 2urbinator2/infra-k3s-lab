@@ -39,9 +39,9 @@ initial() {
     kubectl apply -f config/frontend-service.yaml
 }
 
-# deployment changes function
+# Deployment changes function
 change() {
-    echo "Tschüss"
+    echo "Has to be implemented"
 }
 
 # Prüfen, ob ein Parameter übergeben wurde

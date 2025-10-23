@@ -44,20 +44,28 @@ delete_all() {
   
 }
 
+# Does not delete perfectly yet due to finalizers in namespace
 delete_app() {
-    echo "Checking if namespace 'my-app' exists..."
-    if ! kubectl get namespace my-app &>/dev/null; then
-        echo "Namespace my-app does not exist."
-        exit 0
+    NAMESPACE="my-app"
+
+    echo "Checking if namespace '$NAMESPACE' exists..."
+    if ! kubectl get namespace "$NAMESPACE" &>/dev/null; then
+        echo "Namespace $NAMESPACE does not exist."
+        return 0
     fi
 
-    echo "Deleting all resources in namespace 'my-app'..."
-    kubectl delete all --all -n my-app
-    echo "Deleting all resources in namespace 'my-app' and the namespace..."
-    kubectl get namespace my-app -o json > /tmp/ns.json
-    jq '.spec.finalizers=[]' /tmp/ns.json > /tmp/ns-mod.json
-    kubectl replace --raw "/api/v1/namespaces/my-app/finalize" -f /tmp/ns-mod.json
-    kubectl delete namespace my-app
+    echo "Deleting all resources in namespace '$NAMESPACE'..."
+    kubectl delete all --all -n "$NAMESPACE" --ignore-not-found
+    kubectl delete configmap,secret,pvc --all -n "$NAMESPACE" --ignore-not-found
+
+    echo "Removing finalizers from the namespace itself..."
+    kubectl get namespace "$NAMESPACE" -o json | \
+    jq '.spec.finalizers=[]' | \
+    kubectl replace --raw "/api/v1/namespaces/$NAMESPACE/finalize" -f -
+
+    echo "Deleting namespace '$NAMESPACE'..."
+    kubectl delete namespace "$NAMESPACE" --wait=true
+    echo "Namespace '$NAMESPACE' and all resources deleted."
 }
 
 # === Main Script ===

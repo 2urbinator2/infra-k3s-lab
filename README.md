@@ -17,12 +17,12 @@ This project deploys a simple Berlin Travel Guide consisting of two microservice
 1. Create and setup infrastructure: `./scripts/setup-cluster.sh` 
 2. Set-up registry: `./scripts/setup-registry.sh`
 3. Deploy application on the cluster: `./scripts/deploy.sh initial`
-   - Information about the application: `cd/applications/berlin-travel-guide`
+ 
 
 
 
 
-    - Open in Browser: `open "http://localhost:30080"` and `open "http://localhost:31000/quote" `
+    - Open in Browser: `open "http://localhost:30080"` and `open "http://localhost:31000/quote"`
     - Stop in Browser: 
 
 
@@ -33,6 +33,7 @@ and then `./scripts/deploy-app.sh`
 3. Deploy changes to the cluster: `./scripts/deploy-changes.sh`
 4. Stop and restart (VMs in VBox and Docker): `./scripts/startstop.sh stop` and `./scripts/startstop.sh start`
 5. Destroy infrastructure and deployments: `./scripts/destroy.sh all`
+6.  Information about the application: `cd/applications/berlin-travel-guide`
 
 ## Project Summary
 ### 1. Create VMs with Vagrantfile

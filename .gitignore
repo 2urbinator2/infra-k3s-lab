@@ -10,3 +10,6 @@ registry-data
 # Ignore deployment files
 config/backend-deployment.yaml
 config/frontend-deployment.yaml
+
+# Ignore Skaffold files
+skaffold-1.yaml
