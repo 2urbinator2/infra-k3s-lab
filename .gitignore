@@ -1,9 +1,6 @@
 # Ignore Vagrant files
 .vagrant/
 
-# Ignore 
-.env 
-
 # Ignore registry data
 registry-data
 
@@ -13,3 +10,9 @@ config/frontend-deployment.yaml
 
 # Ignore Skaffold files
 skaffold-1.yaml
+
+# Revision
+archiv.md
+config-1/
+applications-1/
+scripts-1/

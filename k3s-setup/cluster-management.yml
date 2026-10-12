@@ -1,0 +1,60 @@
+- name: Configure kubectl for central cluster management
+  hosts: "cluster-control"
+  become: yes
+  tasks:
+    - name: Get NatNetwork IP directly
+      shell: hostname -I | awk '{print $2}'
+      register: ip_raw
+
+    - name: Set advertise_ip fact
+      ansible.builtin.set_fact:
+        advertise_ip: "{{ ip_raw.stdout | trim }}"
+
+    - name: Write config.yaml with dynamic advertise-address and TLS SANs
+      ansible.builtin.copy:
+        dest: /etc/rancher/k3s/config.yaml
+        content: |
+          advertise-address: {{ advertise_ip }}
+          tls-san:
+            - {{ advertise_ip }}
+            - 127.0.0.1
+        owner: root
+        group: root
+        mode: '0644'
+    
+    - name: Restart k3s to apply new configuration
+      ansible.builtin.systemd:
+        name: k3s
+        state: restarted
+
+    - name: Copy k3s.yaml from host to local machine
+      ansible.builtin.fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "{{ lookup('env','HOME') }}/.kube/my-cluster.yml"
+        flat: yes
+
+    - name: Update server address in kubeconfig for local Mac access
+      ansible.builtin.replace:
+        path: "{{ lookup('env','HOME') }}/.kube/my-cluster.yml"
+        regexp: 'server: https://.*:6443'
+        replace: 'server: https://127.0.0.1:6443'
+      delegate_to: localhost
+      run_once: true
+      become: no
+
+    - name: Ensure kubeconfig has context "my-cluster"
+      ansible.builtin.command:
+        cmd: kubectl --kubeconfig "{{ lookup('env','HOME') }}/.kube/my-cluster.yml" config set-context my-cluster --cluster=my-cluster --user=my-cluster
+      delegate_to: localhost
+      run_once: true
+      become: no
+
+    - name: Add KUBECONFIG export to local Mac shell config
+      ansible.builtin.lineinfile:
+        path: "{{ lookup('env','HOME') }}/.zshrc"
+        line: "export KUBECONFIG=~/.kube/my-cluster.yml"
+        create: yes
+        state: present
+      delegate_to: localhost
+      run_once: true
+      become: no

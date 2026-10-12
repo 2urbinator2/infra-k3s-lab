@@ -1,16 +1,16 @@
 all:
   hosts:
-    cluster-control-1:
+    cluster-control:
       ansible_host: 127.0.0.1
-      ansible_port: "{{ (lookup('file', playbook_dir + '/.env', errors='ignore') | regex_search('CONTROL_PORT=(\\d+)', '\\1') | default(2222, true)) | int }}"
+      ansible_port: 2250
       ansible_user: vagrant
       ansible_python_interpreter: /usr/bin/python3
       ansible_ssh_private_key_file: .vagrant/machines/cluster-control/virtualbox/private_key
       ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
-    cluster-worker-1:
+    cluster-worker:
       ansible_host: 127.0.0.1
-      ansible_port: "{{ (lookup('file', playbook_dir + '/.env', errors='ignore') | regex_search('WORKER_PORT=(\\d+)', '\\1') | default(2200, true)) | int }}"
+      ansible_port: 2249
       ansible_user: vagrant
       ansible_python_interpreter: /usr/bin/python3
       ansible_ssh_private_key_file: .vagrant/machines/cluster-worker/virtualbox/private_key
