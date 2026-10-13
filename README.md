@@ -20,12 +20,3 @@ This repo fully automates the deployment of a local K3s cluster on VirtualBox VM
 3. Setup cluster managemant: `ansible-playbook -i inventory.yaml k3s-setup/cluster-management.yml --ssh-extra-args="-o StrictHostKeyChecking=no"`
 4. Start tunnel: `vagrant ssh cluster-control -- -N -L 6443:127.0.0.1:6443 &`
 
-**Helpfull commands:**
-```bash
-ls ~/.kube/
-rm ~/.kube/my-cluster.yml
-
-
-rm -rf .vagrant
-
-```

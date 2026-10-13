@@ -49,12 +49,6 @@
       run_once: true
       become: no
 
-    - name: Add KUBECONFIG export to local Mac shell config
-      ansible.builtin.lineinfile:
-        path: "{{ lookup('env','HOME') }}/.zshrc"
-        line: "export KUBECONFIG=~/.kube/my-cluster.yml"
-        create: yes
-        state: present
-      delegate_to: localhost
-      run_once: true
-      become: no
+    - name: Set KUBECONFIG environment variable for current run
+      set_fact:
+        ansible_env: "{{ ansible_env | combine({'KUBECONFIG': lookup('env', 'HOME') + '/.kube/my-cluster.yml'}) }}"

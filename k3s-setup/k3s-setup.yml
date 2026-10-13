@@ -18,10 +18,6 @@
         internal_ip: "{{ nic2_out.stdout | trim }}"
       when: nic2_out.stdout is defined and nic2_out.stdout != ""
 
-    - name: Show the resolved internal IP
-      debug:
-        msg: "Die ermittelte Clean-IP für {{ inventory_hostname }} ist: {{ internal_ip }}"
-
 - name: Install k3s on control planes
   hosts: "cluster-control"
   become: yes
