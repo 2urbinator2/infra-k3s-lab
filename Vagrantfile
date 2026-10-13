@@ -19,9 +19,6 @@ Vagrant.configure("2") do |config|
         vb.cpus = cfg[:cpus]
 
       end
-
     end
-
   end
-
 end
