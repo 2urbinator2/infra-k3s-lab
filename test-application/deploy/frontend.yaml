@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-app
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/2urbinator2/berlin-travel-guide/frontend:latest
+        ports:
+        - containerPort: 5003
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: my-app
+spec:
+  selector:
+    app: frontend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80         
+      targetPort: 80  
+      nodePort: 30080 

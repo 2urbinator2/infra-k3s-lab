@@ -6,7 +6,6 @@ services:
     ports:
       - "31000:5003"
 
-
   frontend:
     build: ./frontend
     ports:

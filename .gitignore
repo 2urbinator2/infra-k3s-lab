@@ -1,5 +1,6 @@
 # Ignore Vagrant files
 .vagrant/
+good-to-know.md
 
 # Ignore registry data
 registry-data
