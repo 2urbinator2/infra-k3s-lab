@@ -1,0 +1,17 @@
+all:
+  hosts:
+    cluster-control:
+      ansible_host: 127.0.0.1
+      ansible_port: 2250
+      ansible_user: vagrant
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_private_key_file: .vagrant/machines/cluster-control/virtualbox/private_key
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+    cluster-worker:
+      ansible_host: 127.0.0.1
+      ansible_port: 2249
+      ansible_user: vagrant
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_private_key_file: .vagrant/machines/cluster-worker/virtualbox/private_key
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'

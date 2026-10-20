@@ -1,0 +1,47 @@
+- name: Install k3s clusters
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Installing dependencies
+      apt:
+        name: curl
+        state: present
+        update_cache: yes
+
+    - name: Find clean internal IP of enp0s9
+      shell: "ip -4 addr show dev enp0s9 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1"
+      register: nic2_out
+
+    - name: Set internal_ip fact as clean string
+      set_fact:
+        internal_ip: "{{ nic2_out.stdout | trim }}"
+      when: nic2_out.stdout is defined and nic2_out.stdout != ""
+
+- name: Install k3s on control planes
+  hosts: "cluster-control"
+  become: yes
+  tasks:
+    - name: Install k3s on control plane
+      shell: >
+        INSTALL_K3S_EXEC="--node-ip {{ internal_ip }} --advertise-address {{ internal_ip }}" 
+        sh -c 'curl -sfL https://get.k3s.io | sh -'
+    
+    - name: Get k3s token from control plane
+      command: cat /var/lib/rancher/k3s/server/node-token
+      register: k3s_token
+      changed_when: false
+  
+- name: Install k3s auf Worker
+  hosts: "cluster-worker"
+  become: yes
+  vars:
+    k3s_port: 6443
+  tasks:
+    - name: Install k3s auf Worker
+      environment:
+        K3S_URL: "https://{{ hostvars['cluster-control'].internal_ip }}:{{ k3s_port }}"
+        K3S_TOKEN: "{{ hostvars['cluster-control'].k3s_token.stdout }}"
+        INSTALL_K3S_EXEC: "--node-ip {{ internal_ip }}"
+      shell: curl -sfL https://get.k3s.io | sh -
+  
